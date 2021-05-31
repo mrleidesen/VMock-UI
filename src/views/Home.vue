@@ -20,10 +20,20 @@
           :label-col="{ span: 2 }"
         >
           <a-form-item label="名称" required>
-            <a-input v-model:value="formState.name"></a-input>
+            <a-input v-model:value="formState.name" placeholder="该接口名称"></a-input>
           </a-form-item>
           <a-form-item label="请求URL" required>
-            <a-input v-model:value="formState.rurl"></a-input>
+            <a-input v-model:value="formState.rurl" placeholder="请求的接口地址"></a-input>
+          </a-form-item>
+          <a-form-item label="请求类型">
+            <!-- <a-input v-model:value="formState.rtype"></a-input> -->
+            <a-select v-model:value="formState.rtype" placeholder="不填默认拦截全部">
+              <a-select-option value="">全部</a-select-option>
+              <a-select-option value="get">GET</a-select-option>
+              <a-select-option value="post">POST</a-select-option>
+              <a-select-option value="put">PUT</a-select-option>
+              <a-select-option value="delete">DELETE</a-select-option>
+            </a-select>
           </a-form-item>
         </a-form>
       </div>
@@ -46,7 +56,7 @@ export default {
     const formState = reactive({
       name: "",
       rurl: "",
-      rtype: null
+      rtype: ""
     })
     const activeIndex = ref(-1)
 
