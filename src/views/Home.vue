@@ -1,3 +1,11 @@
 <template>
-  <h1>Hello Home!</h1>
+  <h1>Hello</h1>
 </template>
+
+<script>
+export default {
+  setup() {
+
+  }
+}
+</script>
