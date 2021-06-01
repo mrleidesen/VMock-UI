@@ -28,22 +28,46 @@
           <a-form-item label="请求类型">
             <a-select v-model:value="formState.rtype" placeholder="不填默认拦截全部">
               <a-select-option value="">全部</a-select-option>
-              <a-select-option value="get">GET</a-select-option>
-              <a-select-option value="post">POST</a-select-option>
-              <a-select-option value="put">PUT</a-select-option>
-              <a-select-option value="delete">DELETE</a-select-option>
+              <a-select-option 
+                v-for="option in selectOptions.rtype"
+                :key="option"
+                :value="option"
+              >{{ option.toUpperCase() }}</a-select-option>
             </a-select>
           </a-form-item>
           <a-divider>模板</a-divider>
 
-          <div
+          <a-row
             v-for="(item, idx) in formState.template"
             :key="idx"
           >
-            <a-form-item label="字段名">
-              <a-input v-model:value="item.keyName" placeholder="该接口名称"></a-input>
-            </a-form-item>
-          </div>
+            <a-col :span="6">
+              <a-form-item label="属性名" :labelCol="{ span: 5 }">
+                <a-input v-model:value="item.keyName" placeholder="属性名"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="规则" :labelCol="{ span: 5 }">
+                <a-input v-model:value="item.rule" placeholder="生成规则"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="值" :labelCol="{ span: 5 }">
+                <a-input v-model:value="item.value" placeholder="属性值"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="类型" :labelCol="{ span: 5 }">
+                <a-select v-model:value="item.type" placeholder="属性值的类型">
+                  <a-select-option 
+                    v-for="option in selectOptions.type"
+                    :key="option"
+                    :value="option.toLowerCase()"
+                  >{{ option }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
         </a-form>
       </div>
     </div>
@@ -55,6 +79,10 @@ import { reactive, ref } from 'vue'
 
 export default {
   setup() {
+    const selectOptions = {
+      rtype: ['get', 'post', 'put', 'delete'],
+      type: ['String', 'Number', 'Array', 'Object']
+    }
     const configes = reactive([
       {
         name: 'TestDemo',
@@ -67,7 +95,7 @@ export default {
       rurl: "",
       rtype: "",
       template: [
-        { keyName: 'data', rule: '', value: "", type: "string" }
+        { keyName: 'data', rule: '1-10', value: "", type: "string" }
       ]
     })
     const activeIndex = ref(-1)
@@ -82,6 +110,7 @@ export default {
       configes,
       formState,
       activeIndex,
+      selectOptions,
       onChangeActive,
     }
   }
