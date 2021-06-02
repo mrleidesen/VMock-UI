@@ -43,7 +43,7 @@
               >{{ option.toUpperCase() }}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-divider>模板</a-divider>
+          <a-divider>模板数据</a-divider>
 
           <a-row
             v-for="(item, idx) in formState.template"
