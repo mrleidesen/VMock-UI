@@ -14,11 +14,18 @@
         <p v-if="config.rtype">请求类型：<a-tag color="blue">{{ config.rtype.toUpperCase() }}</a-tag></p>
       </a-card>
 
-      <a-button 
-        class="mt-2"
-        type="primary" 
-        @click="onAddConfig"
-      >新增</a-button>
+      <div class="flex">
+        <a-button 
+          class="mr-2"
+          type="primary" 
+          @click="onAddConfig"
+        >新增</a-button>
+
+        <a-button 
+          type="primary" 
+          @click="renderConfig"
+        >生成</a-button>
+      </div>
     </div>
 
     <div class="flex-1 flex box-border p-2">
@@ -113,6 +120,7 @@ export default {
       template: []
     })
     const activeIndex = ref(-1)
+    const renderText = ref("")
 
     // methods
     const onChangeActive = (index) => {
@@ -129,15 +137,38 @@ export default {
       configes[activeIndex.value] = {...formState}
     }
 
+    const renderConfig = () => {
+      let render = `
+        import Mock from 'mockjs'
+      `
+      for (const config of configes) {
+        const hasType = config.rtype ? `'${config.rtype}',` : ''
+        let template = ``
+        for (const item of config.template) {
+          template += `'${item.keyName}|${item.rule}': '${item.value}',\n`
+        }
+
+        render += `
+          Mock.mock(new RegExp('${config.rurl}'), ${hasType} {
+            ${template}
+          })
+        `
+      }
+
+      renderText.value = render
+    }
+
     return {
       configes,
       formState,
       activeIndex,
       selectOptions,
+      renderText,
       onChangeActive,
       onAddTemplate,
       onAddConfig,
-      onSaveConfig
+      onSaveConfig,
+      renderConfig,
     }
   }
 }
